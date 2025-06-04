@@ -1,14 +1,14 @@
 package linkedlist;
 
-public class MyLinkedList<T> {
+public class MyLinkedList {
     private Node head;
     private int size;
 
     private class Node {
-        T value;
+        String value;
         Node next;
 
-        Node(T value) {
+        Node(String value) {
             this.value = value;
         }
     }
@@ -18,14 +18,14 @@ public class MyLinkedList<T> {
         size = 0;
     }
 
-    public void addFirst(T value) {
+    public void addFirst(String value) {
         Node newNode = new Node(value);
         newNode.next = head;
         head = newNode;
         size++;
     }
 
-    public void addLast(T value) {
+    public void addLast(String value) {
         Node newNode = new Node(value);
         if (head == null) {
             head = newNode;
@@ -39,7 +39,7 @@ public class MyLinkedList<T> {
         size++;
     }
 
-    public boolean remove(T value) {
+    public boolean remove(String value) {
         if (head == null) return false;
 
         if (head.value.equals(value)) {
@@ -60,7 +60,7 @@ public class MyLinkedList<T> {
         return true;
     }
 
-    public boolean contains(T value) {
+    public boolean contains(String value) {
         Node current = head;
         while (current != null) {
             if (current.value.equals(value)) return true;
@@ -69,13 +69,14 @@ public class MyLinkedList<T> {
         return false;
     }
 
-    public T get(int index) {
+    public String get(int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
 
         Node current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
+
         return current.value;
     }
 
@@ -109,7 +110,7 @@ public class MyLinkedList<T> {
         return sb.toString();
     }
 
-    public void add(int index, T value) {
+    public void add(int index, String value) {
         if (index < 0 || index > size) throw new IndexOutOfBoundsException();
 
         if (index == 0) {
@@ -128,11 +129,11 @@ public class MyLinkedList<T> {
         size++;
     }
 
-    public T removeAt(int index) {
+    public String removeAt(int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
 
         if (index == 0) {
-            T value = head.value;
+            String value = head.value;
             head = head.next;
             size--;
             return value;
@@ -143,7 +144,7 @@ public class MyLinkedList<T> {
             current = current.next;
         }
 
-        T value = current.next.value;
+        String value = current.next.value;
         current.next = current.next.next;
         size--;
         return value;
@@ -161,7 +162,7 @@ public class MyLinkedList<T> {
         head = prev;
     }
 
-    public int indexOf(T value) {
+    public int indexOf(String value) {
         Node current = head;
         int index = 0;
         while (current != null) {

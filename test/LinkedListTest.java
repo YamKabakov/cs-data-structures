@@ -2,7 +2,7 @@ import linkedlist.MyLinkedList;
 
 public class LinkedListTest {
     public static void main(String[] args) {
-        MyLinkedList<String> list = new MyLinkedList<>();
+        MyLinkedList list = new MyLinkedList();
 
         // Test 1: addFirst / addLast
         list.addFirst("B");
