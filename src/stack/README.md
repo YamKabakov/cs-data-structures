@@ -20,6 +20,12 @@ This module provides a simple and efficient implementation of a stack using a si
 
 - `size()`
     Returns the number of elements in the stack.
+
+- `clear()` 
+    Empties the stack.
+
+- `contains(String value)`
+    Checks if a specific value exists in the stack.
     
 - `toString()`
    Returns a string representation from top to bottom.

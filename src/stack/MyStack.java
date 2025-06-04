@@ -63,4 +63,20 @@ public class MyStack {
         sb.append("]");
         return sb.toString();
     }
+
+    // Removes all elements from the stack
+    public void clear() {
+        top = null;
+        size = 0;
+    }
+
+    // Returns true if the stack contains the given value
+    public boolean contains(String value) {
+        Node current = top;
+        while (current != null) {
+            if (current.value.equals(value)) return true;
+            current = current.next;
+        }
+        return false;
+    }
 }

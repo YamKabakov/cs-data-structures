@@ -31,5 +31,17 @@ public class StackTest {
         System.out.println("Test 11 (empty after pops): " + stack.isEmpty());
         System.out.println("Test 12 (pop on empty): " + (stack.pop() == null));
         System.out.println("Test 13 (peek on empty): " + (stack.peek() == null));
+
+        // Test contains
+        stack.push("X");
+        stack.push("Y");
+        stack.push("Z");
+        System.out.println("Test 14 (contains 'Y'): " + stack.contains("Y")); // true
+        System.out.println("Test 15 (contains 'A'): " + !stack.contains("A")); // true
+
+        // Test clear
+        stack.clear();
+        System.out.println("Test 16 (isEmpty after clear): " + stack.isEmpty()); // true
+        System.out.println("Test 17 (size after clear): " + (stack.size() == 0)); // true
     }
 }
