@@ -8,15 +8,16 @@ This project contains clean, hand-coded implementations of core data structures 
 
 ## 🧱 Implemented Data Structures
 
-| Structure     | Description                              | Link              |
-|---------------|------------------------------------------|-------------------|
-| Singly Linked List | Custom implementation with insert/remove/search operations | [`MyLinkedList`](src/linkedlist) |
-| Hash Map      | String-to-String hash table using separate chaining and dynamic resizing | [`MyHashMap`](src/hashmap) |
+| Structure              | Description                                                      | Link                 |
+|------------------------|------------------------------------------------------------------|----------------------|
+| Singly Linked List     | Custom implementation with insert/remove/search operations       | [`MyLinkedList`](src/linkedlist) |
+| Hash Map               | Hash table with separate chaining and dynamic resizing           | [`MyHashMap`](src/hashmap)       |
+| Binary Search Tree     | Balanced BST with auto-rebalancing on insert/remove              | [`MyBinarySearchTree`](src/bst)  |
 
 Each structure includes:
 - Full method support
-- Basic unit tests in `/test/`
-- Explanations in subfolder `README.md`
+- Manual test coverage in `/test/`
+- Explanation in its own subfolder `README.md`
 
 ---
 
@@ -24,9 +25,10 @@ Each structure includes:
 
 ```
 cs-data-structures/
-├── src/                # Source code
+├── src/
 │   ├── linkedlist/     # MyLinkedList.java + README
-│   └── hashmap/        # MyHashMap.java + README
+│   ├── hashmap/        # MyHashMap.java + README
+│   └── bst/            # MyBinarySearchTree.java + README
 ├── test/               # Manual test files
 ├── out/                # Compiled output (.class files)
 └── README.md           # Project overview (this file)
@@ -41,33 +43,33 @@ cs-data-structures/
 javac -d out -cp src $(find src test -name "*.java")
 ```
 
-### Run specific tests:
+### Run test classes:
 ```bash
 java -cp out LinkedListTest
 java -cp out HashMapTest
+java -cp out BSTTest
 ```
-
-No external libraries are required. Java 8+ is recommended.
 
 ---
 
 ## 🚀 Goals of This Project
 
-- ✅ Strengthen understanding of data structures
-- ✅ Prepare for coding interviews and technical tests
-- ✅ Build a strong GitHub portfolio with real code
-- ✅ Practice clean coding, documentation, and testing
+- ✅ Master internal mechanics of data structures  
+- ✅ Prepare for coding interviews and technical screenings  
+- ✅ Build a strong GitHub portfolio with self-contained projects  
+- ✅ Practice clean code, testing, and modularity
 
 ---
 
 ## 📌 What's Next?
 
-This project will continue to grow with additional modules, including:
+This project will continue to grow with:
 
-- [ ] Stack and Queue
-- [ ] Binary Search Tree (BST)
-- [ ] Generic versions of each structure
-- [ ] JUnit-based test coverage
+- [ ] MyStack (LIFO)
+- [ ] MyQueue (FIFO)
+- [ ] Binary Search Tree (Generic)
+- [ ] JUnit-based testing
+- [ ] Optional AVL or Red-Black Tree versions
 
 ---
 
