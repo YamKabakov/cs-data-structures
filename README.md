@@ -67,7 +67,6 @@ This project will continue to grow with:
 
 - [ ] MyStack (LIFO)
 - [ ] MyQueue (FIFO)
-- [ ] Binary Search Tree (Generic)
 - [ ] JUnit-based testing
 - [ ] Optional AVL or Red-Black Tree versions
 
