@@ -4,44 +4,39 @@ public class StackTest {
     public static void main(String[] args) {
         MyStack stack = new MyStack();
 
-        // Initial state
-        System.out.println("Test 1 (isEmpty): " + (stack.isEmpty() == true));
-        System.out.println("Test 2 (size): " + (stack.size() == 0));
-
-        // Push values
+        // Test 1: push
         stack.push("A");
         stack.push("B");
         stack.push("C");
-        System.out.println("Test 3 (toString): " + stack.toString().equals("[C, B, A]"));
-        System.out.println("Test 4 (size): " + (stack.size() == 3));
-        System.out.println("Test 5 (isEmpty): " + (stack.isEmpty() == false));
+        System.out.println("Test 1 (push + toString): " + stack.toString().equals("[C, B, A]"));
 
-        // Peek at top
-        System.out.println("Test 6 (peek): " + "C".equals(stack.peek()));
-        System.out.println("Test 7 (size after peek): " + (stack.size() == 3));
+        // Test 2: peek
+        System.out.println("Test 2 (peek == C): " + stack.peek().equals("C"));
 
-        // Pop elements
-        System.out.println("Test 8 (pop): " + "C".equals(stack.pop()));
-        System.out.println("Test 9 (after pop): " + stack.toString().equals("[B, A]"));
-        System.out.println("Test 10 (peek): " + "B".equals(stack.peek()));
+        // Test 3: size
+        System.out.println("Test 3 (size == 3): " + (stack.size() == 3));
 
-        // Clear stack
-        stack.pop();
-        stack.pop();
-        System.out.println("Test 11 (empty after pops): " + stack.isEmpty());
-        System.out.println("Test 12 (pop on empty): " + (stack.pop() == null));
-        System.out.println("Test 13 (peek on empty): " + (stack.peek() == null));
+        // Test 4: contains
+        System.out.println("Test 4 (contains B): " + stack.contains("B"));
+        System.out.println("Test 5 (contains Z): " + !stack.contains("Z"));
 
-        // Test contains
-        stack.push("X");
-        stack.push("Y");
-        stack.push("Z");
-        System.out.println("Test 14 (contains 'Y'): " + stack.contains("Y")); // true
-        System.out.println("Test 15 (contains 'A'): " + !stack.contains("A")); // true
+        // Test 6: pop
+        System.out.println("Test 6 (pop == C): " + stack.pop().equals("C"));
+        System.out.println("Test 7 (toString after pop): " + stack.toString().equals("[B, A]"));
 
-        // Test clear
+        // Test 8: isEmpty (should be false)
+        System.out.println("Test 8 (isEmpty == false): " + !stack.isEmpty());
+
+        // Test 9: clear
         stack.clear();
-        System.out.println("Test 16 (isEmpty after clear): " + stack.isEmpty()); // true
-        System.out.println("Test 17 (size after clear): " + (stack.size() == 0)); // true
+        System.out.println("Test 9 (clear + isEmpty): " + stack.isEmpty());
+        System.out.println("Test 10 (size == 0): " + (stack.size() == 0));
+        System.out.println("Test 11 (toString == []): " + stack.toString().equals("[]"));
+
+        // Test 12: pop empty
+        System.out.println("Test 12 (pop on empty == null): " + (stack.pop() == null));
+
+        // Test 13: peek empty
+        System.out.println("Test 13 (peek on empty == null): " + (stack.peek() == null));
     }
 }

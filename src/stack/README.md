@@ -34,7 +34,7 @@ This module provides a simple and efficient implementation of a stack using a si
 
 ## 📌 Notes
 
-- This implementation is based on a singly linked list to ensure efficient `O(1)` operations.
+- This implementation is based on a singly linked list
 - All operations are tested in `StackTest.java`
 
 ---

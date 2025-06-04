@@ -1,4 +1,4 @@
-# 📘 MyLinkedList (Singly Linked List)
+# ⛓️ MyLinkedList (Singly Linked List)
 
 A basic implementation of a singly linked list using `String` values.
 
@@ -29,6 +29,9 @@ A basic implementation of a singly linked list using `String` values.
 
 - `boolean isEmpty()`  
   Check if the list has zero elements.
+
+- `clear()`
+    Removes all elements from the list.
 
 - `int size()`  
   Return the number of elements.

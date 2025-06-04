@@ -24,6 +24,9 @@ A fully functional Binary Search Tree (BST) implementation using `int` keys and 
 - `boolean isEmpty()`  
   Returns true if the tree is empty.
 
+  - `clear()`
+    Removes all elements from the tree.
+
 - `int min()` / `int max()`  
   Returns the smallest/largest key in the tree.
 

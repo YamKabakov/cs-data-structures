@@ -109,6 +109,11 @@ public class MyLinkedList {
         return size == 0;
     }
 
+    public void clear() {
+        head = null;
+        size = 0;
+    }
+
     // Helper to get node at index
     private Node getNode(int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();

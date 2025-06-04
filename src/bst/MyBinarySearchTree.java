@@ -1,172 +1,142 @@
 package bst;
 
+/**
+ * A balanced binary search tree that stores String values.
+ * It rebalances after every insertion or removal.
+ */
 public class MyBinarySearchTree {
+    private Node root;
+    private int size;
+
     private static class Node {
-        int key;
         String value;
         Node left, right;
 
-        Node(int key, String value) {
-            this.key = key;
+        Node(String value) {
             this.value = value;
         }
     }
 
-    private Node root;
-    private int size;
-
-    // Insert key-value into tree and rebalance
-    public void insert(int key, String value) {
-        root = insert(root, key, value);
+    // Public insert method
+    public void insert(String value) {
+        root = insert(root, value);
         size++;
-        root = rebalance(root); // automatic rebalance after modification
-    }
-
-    private Node insert(Node node, int key, String value) {
-        if (node == null) return new Node(key, value);
-        if (key < node.key) node.left = insert(node.left, key, value);
-        else node.right = insert(node.right, key, value);
-        return node;
-    }
-
-    // Get value by key
-    public String get(int key) {
-        Node current = root;
-        while (current != null) {
-            if (key == current.key) return current.value;
-            current = key < current.key ? current.left : current.right;
-        }
-        return null;
-    }
-
-    // Check if key exists
-    public boolean contains(int key) {
-        return get(key) != null;
-    }
-
-    // Return smallest key in tree
-    public int min() {
-        Node current = root;
-        if (current == null) throw new IllegalStateException();
-        while (current.left != null) current = current.left;
-        return current.key;
-    }
-
-    // Return largest key in tree
-    public int max() {
-        Node current = root;
-        if (current == null) throw new IllegalStateException();
-        while (current.right != null) current = current.right;
-        return current.key;
-    }
-
-    // Remove key from tree and rebalance
-    public void remove(int key) {
-        root = remove(root, key);
-        size--;
         root = rebalance(root);
     }
 
-    private Node remove(Node node, int key) {
-        if (node == null) return null;
+    // Recursive insert
+    private Node insert(Node node, String value) {
+        if (node == null) return new Node(value);
+        if (value.compareTo(node.value) < 0) node.left = insert(node.left, value);
+        else node.right = insert(node.right, value);
+        return node;
+    }
 
-        if (key < node.key) {
-            node.left = remove(node.left, key);
-        } else if (key > node.key) {
-            node.right = remove(node.right, key);
-        } else {
-            // Case: 0 or 1 child
+    // Public remove method
+    public void remove(String value) {
+        if (contains(value)) {
+            root = remove(root, value);
+            size--;
+            root = rebalance(root);
+        }
+    }
+
+    // Recursive remove
+    private Node remove(Node node, String value) {
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp < 0) node.left = remove(node.left, value);
+        else if (cmp > 0) node.right = remove(node.right, value);
+        else {
             if (node.left == null) return node.right;
             if (node.right == null) return node.left;
 
-            // Case: 2 children
-            Node successor = findMin(node.right);
-            node.key = successor.key;
-            node.value = successor.value;
-            node.right = remove(node.right, successor.key);
+            Node min = findMin(node.right);
+            node.value = min.value;
+            node.right = remove(node.right, min.value);
         }
         return node;
     }
 
+    // Find minimum node
     private Node findMin(Node node) {
         while (node.left != null) node = node.left;
         return node;
     }
 
-    // Inorder traversal print
-    public void inorder() {
-        inorder(root);
-        System.out.println();
+    // Check if a value exists in the tree
+    public boolean contains(String value) {
+        return contains(root, value);
     }
 
-    private void inorder(Node node) {
-        if (node == null) return;
-        inorder(node.left);
-        System.out.print("(" + node.key + ", " + node.value + ") ");
-        inorder(node.right);
+    private boolean contains(Node node, String value) {
+        if (node == null) return false;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) return true;
+        else if (cmp < 0) return contains(node.left, value);
+        else return contains(node.right, value);
     }
 
-    // Return number of elements
-    public int size() {
-        return size;
+    // Clear the tree
+    public void clear() {
+        root = null;
+        size = 0;
     }
 
-    // Return whether tree is empty
+    // Check if tree is empty
     public boolean isEmpty() {
         return size == 0;
     }
 
-    // Rebalance tree using sorted array
+    // Return number of nodes
+    public int size() {
+        return size;
+    }
+
+    // Rebalance using sorted array
     private Node rebalance(Node node) {
-        if (node == null) return null;
-
-        // Collect keys and values into array
-        int n = countNodes(node);
-        int[] keys = new int[n];
-        String[] values = new String[n];
-        fillInorder(node, keys, values, new int[]{0});
-
-        // Build balanced BST
-        return buildBalanced(keys, values, 0, n - 1);
+        String[] values = toArray(node);
+        return buildBalancedTree(values, 0, values.length - 1);
     }
 
-    private int countNodes(Node node) {
-        if (node == null) return 0;
-        return 1 + countNodes(node.left) + countNodes(node.right);
+    // Convert to sorted array
+    private String[] toArray(Node node) {
+        String[] result = new String[size];
+        fillInOrder(node, result, new int[]{0});
+        return result;
     }
 
-    private void fillInorder(Node node, int[] keys, String[] values, int[] i) {
+    private void fillInOrder(Node node, String[] array, int[] index) {
         if (node == null) return;
-        fillInorder(node.left, keys, values, i);
-        keys[i[0]] = node.key;
-        values[i[0]] = node.value;
-        i[0]++;
-        fillInorder(node.right, keys, values, i);
+        fillInOrder(node.left, array, index);
+        array[index[0]++] = node.value;
+        fillInOrder(node.right, array, index);
     }
 
-    private Node buildBalanced(int[] keys, String[] values, int low, int high) {
-        if (low > high) return null;
-        int mid = (low + high) / 2;
-        Node node = new Node(keys[mid], values[mid]);
-        node.left = buildBalanced(keys, values, low, mid - 1);
-        node.right = buildBalanced(keys, values, mid + 1, high);
+    // Build balanced tree from sorted array
+    private Node buildBalancedTree(String[] values, int start, int end) {
+        if (start > end) return null;
+        int mid = (start + end) / 2;
+        Node node = new Node(values[mid]);
+        node.left = buildBalancedTree(values, start, mid - 1);
+        node.right = buildBalancedTree(values, mid + 1, end);
         return node;
     }
 
-    // String representation of tree in inorder
+    // String representation in sorted order
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        buildString(root, sb);
-        if (sb.length() > 1) sb.setLength(sb.length() - 2); // remove trailing comma
+        inOrderString(root, sb);
+        if (sb.length() > 1) sb.setLength(sb.length() - 2); // Remove last comma
         sb.append("]");
         return sb.toString();
     }
 
-    private void buildString(Node node, StringBuilder sb) {
+    private void inOrderString(Node node, StringBuilder sb) {
         if (node == null) return;
-        buildString(node.left, sb);
-        sb.append("(").append(node.key).append(", ").append(node.value).append("), ");
-        buildString(node.right, sb);
+        inOrderString(node.left, sb);
+        sb.append(node.value).append(", ");
+        inOrderString(node.right, sb);
     }
 }
