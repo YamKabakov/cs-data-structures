@@ -1,14 +1,14 @@
 package linkedlist;
 
-public class MyLinkedList {
+public class MyLinkedList<T> {
     private Node head;
     private int size;
 
     private class Node {
-        String value;
+        T value;
         Node next;
 
-        Node(String value) {
+        Node(T value) {
             this.value = value;
         }
     }
@@ -18,16 +18,14 @@ public class MyLinkedList {
         size = 0;
     }
 
-    // Add to the front of the list
-    public void addFirst(String value) {
+    public void addFirst(T value) {
         Node newNode = new Node(value);
         newNode.next = head;
         head = newNode;
         size++;
     }
 
-    // Add to the end of the list
-    public void addLast(String value) {
+    public void addLast(T value) {
         Node newNode = new Node(value);
         if (head == null) {
             head = newNode;
@@ -41,8 +39,7 @@ public class MyLinkedList {
         size++;
     }
 
-    // Remove the first occurrence of a value
-    public boolean remove(String value) {
+    public boolean remove(T value) {
         if (head == null) return false;
 
         if (head.value.equals(value)) {
@@ -63,8 +60,7 @@ public class MyLinkedList {
         return true;
     }
 
-    // Check if a value exists in the list
-    public boolean contains(String value) {
+    public boolean contains(T value) {
         Node current = head;
         while (current != null) {
             if (current.value.equals(value)) return true;
@@ -73,30 +69,25 @@ public class MyLinkedList {
         return false;
     }
 
-    // Get the value at a specific index (0-based)
-    public String get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
 
         Node current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
-
         return current.value;
     }
 
-    // Return the number of elements in the list
     public int size() {
         return size;
     }
 
-    // Clear the list
     public void clear() {
         head = null;
         size = 0;
     }
 
-    // Print all elements
     public void printList() {
         Node current = head;
         while (current != null) {
@@ -106,7 +97,6 @@ public class MyLinkedList {
         System.out.println("null");
     }
 
-    // Return a string version of the list
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -117,5 +107,72 @@ public class MyLinkedList {
         }
         sb.append("null");
         return sb.toString();
+    }
+
+    public void add(int index, T value) {
+        if (index < 0 || index > size) throw new IndexOutOfBoundsException();
+
+        if (index == 0) {
+            addFirst(value);
+            return;
+        }
+
+        Node newNode = new Node(value);
+        Node current = head;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+
+        newNode.next = current.next;
+        current.next = newNode;
+        size++;
+    }
+
+    public T removeAt(int index) {
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+
+        if (index == 0) {
+            T value = head.value;
+            head = head.next;
+            size--;
+            return value;
+        }
+
+        Node current = head;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+
+        T value = current.next.value;
+        current.next = current.next.next;
+        size--;
+        return value;
+    }
+
+    public void reverse() {
+        Node prev = null;
+        Node current = head;
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
+    }
+
+    public int indexOf(T value) {
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.value.equals(value)) return index;
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 }
