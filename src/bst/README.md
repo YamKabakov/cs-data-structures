@@ -44,13 +44,12 @@ A fully functional Binary Search Tree (BST) implementation using `int` keys and 
 
 - Automatically balances itself after every structural modification.
 - Uses recursive logic for most operations.
-- Tested using `BSTTest.java`.
+- All operations are tested in `BSTTest.java`.
 
 ---
 
 ## 🧪 Future Enhancements
 
-- Convert to generic type: `<K extends Comparable<K>, V>`
 - Add height/balance-factor utilities
 - Optional AVL or Red-Black Tree extension
 
