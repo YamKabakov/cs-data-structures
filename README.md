@@ -75,6 +75,7 @@ This project will continue to grow with:
 - [x] MyQueue (FIFO)
 - [ ] JUnit-based testing
 - [ ] Optional AVL or Red-Black Tree versions
+- [ ] Optional Doubly linked list
 
 ---
 
