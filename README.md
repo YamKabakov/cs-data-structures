@@ -1,82 +1,78 @@
-# MyLinkedList (Java)
+# 📘 Data Structures in Java – Built from Scratch
 
-This project implements a complete **singly linked list** in Java using `String` values. It includes both **core** and **advanced** features, making it suitable for CS students, interview preparation, and portfolio demonstration.
+This project contains clean, hand-coded implementations of core data structures using Java. The goal is to build deep understanding of how these structures work under the hood — without relying on Java's built-in collections.
 
----
-
-## ✅ Features Implemented
-
-### Core Methods
-- `addFirst(String value)` — Add to beginning
-- `addLast(String value)` — Add to end
-- `remove(String value)` — Remove by value
-- `get(int index)` — Get value by index
-- `contains(String value)` — Check if value exists
-- `size()` — Number of elements
-- `clear()` — Empty the list
-- `isEmpty()` — Boolean check if empty
-
-### Advanced Methods
-- `add(int index, String value)` — Insert at index
-- `removeAt(int index)` — Remove by index
-- `indexOf(String value)` — Find index of value
-- `reverse()` — Reverse the list in-place
+🧠 Ideal for learning, practicing for interviews, or showcasing CS fundamentals in a portfolio.
 
 ---
 
-## 🧪 Testing
+## 🧱 Implemented Data Structures
 
-All methods are tested using a basic `main()` method in:
+| Structure     | Description                              | Link              |
+|---------------|------------------------------------------|-------------------|
+| Singly Linked List | Custom implementation with insert/remove/search operations | [`MyLinkedList`](src/linkedlist) |
+| Hash Map      | String-to-String hash table using separate chaining and dynamic resizing | [`MyHashMap`](src/hashmap) |
 
-```
-test/LinkedListTest.java
-```
-
-Each test prints `true` or `false` to confirm correctness.
+Each structure includes:
+- Full method support
+- Basic unit tests in `/test/`
+- Explanations in subfolder `README.md`
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Layout
 
 ```
 cs-data-structures/
-├── src/
-│   └── linkedlist/
-│       └── MyLinkedList.java
-├── test/
-│   └── LinkedListTest.java
-├── .gitignore
-├── README.md
+├── src/                # Source code
+│   ├── linkedlist/     # MyLinkedList.java + README
+│   └── hashmap/        # MyHashMap.java + README
+├── test/               # Manual test files
+├── out/                # Compiled output (.class files)
+└── README.md           # Project overview (this file)
 ```
 
 ---
 
-## ▶️ How to Run
+## 🛠️ How to Compile and Run
 
-### Compile:
+### Compile all source and test files:
 ```bash
-javac -d out src/linkedlist/MyLinkedList.java test/LinkedListTest.java
+javac -d out -cp src $(find src test -name "*.java")
 ```
 
-### Run:
+### Run specific tests:
 ```bash
 java -cp out LinkedListTest
+java -cp out HashMapTest
 ```
 
-Expected output: a series of `true` results for each test.
+No external libraries are required. Java 8+ is recommended.
 
 ---
 
-## 📌 About
+## 🚀 Goals of This Project
 
-This project was built by a computer science student as part of a personal portfolio. It demonstrates both mastery of data structure fundamentals and the ability to write clean, testable, and well-structured Java code.
+- ✅ Strengthen understanding of data structures
+- ✅ Prepare for coding interviews and technical tests
+- ✅ Build a strong GitHub portfolio with real code
+- ✅ Practice clean coding, documentation, and testing
 
 ---
 
-## 🧭 What's Next?
+## 📌 What's Next?
 
-Future work may include:
-- `DoublyLinkedList`
-- `MyStack` and `MyQueue`
-- `MyHashMap`
-- Integration into a reusable Java library
+This project will continue to grow with additional modules, including:
+
+- [ ] Stack and Queue
+- [ ] Binary Search Tree (BST)
+- [ ] Generic versions of each structure
+- [ ] JUnit-based test coverage
+
+---
+
+## 📬 Feedback
+
+If you're a student, developer, or reviewer — feel free to fork, star, or submit issues. Collaboration is welcome!
+
+---
