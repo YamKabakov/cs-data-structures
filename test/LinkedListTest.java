@@ -4,46 +4,42 @@ public class LinkedListTest {
     public static void main(String[] args) {
         MyLinkedList list = new MyLinkedList();
 
-        // Test 1: addFirst / addLast
-        list.addFirst("B");
-        list.addFirst("A");
-        list.addLast("C");
-        System.out.println("Test 1 (addFirst/addLast): " + list.toString().equals("A -> B -> C -> null"));
+        // Check initial state
+        System.out.println("Test 1 (isEmpty): " + list.isEmpty());
+        System.out.println("Test 2 (size): " + (list.size() == 0));
 
-        // Test 2: add at index
-        list.add(1, "X"); // should be A -> X -> B -> C
-        System.out.println("Test 2 (add at index 1): " + list.toString().equals("A -> X -> B -> C -> null"));
+        // Add elements at the end
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        System.out.println("Test 3 (toString): " + list.toString().equals("[A, B, C]"));
 
-        // Test 3: get
-        System.out.println("Test 3 (get index 2 == B): " + list.get(2).equals("B"));
+        // Add at specific index
+        list.add(1, "X");
+        System.out.println("Test 4 (add at index): " + list.toString().equals("[A, X, B, C]"));
 
-        // Test 4: indexOf
-        System.out.println("Test 4 (indexOf C == 3): " + (list.indexOf("C") == 3));
+        // Get value by index
+        System.out.println("Test 5 (get 2): " + "B".equals(list.get(2)));
 
-        // Test 5: remove
-        list.remove("X");
-        System.out.println("Test 5 (remove X): " + !list.contains("X"));
+        // Index lookup
+        System.out.println("Test 6 (indexOf B): " + (list.indexOf("B") == 2));
+        System.out.println("Test 7 (indexOf Z): " + (list.indexOf("Z") == -1));
 
-        // Test 6: removeAt
-        String removed = list.removeAt(0); // removes A
-        System.out.println("Test 6 (removeAt 0 == A): " + removed.equals("A") + ", List: " + list);
+        // Remove by index
+        System.out.println("Test 8 (removeAt 1): " + "X".equals(list.removeAt(1)));
+        System.out.println("Test 9 (after remove): " + list.toString().equals("[A, B, C]"));
 
-        // Test 7: reverse
-        list.reverse(); // should reverse B -> C to C -> B
-        System.out.println("Test 7 (reverse): " + list.toString().equals("C -> B -> null"));
+        // Remove by value
+        System.out.println("Test 10 (remove B): " + list.remove("B"));
+        System.out.println("Test 11 (remove Z): " + !list.remove("Z"));
+        System.out.println("Test 12 (after remove): " + list.toString().equals("[A, C]"));
 
-        // Test 8: contains
-        System.out.println("Test 8 (contains B): " + list.contains("B"));
-        System.out.println("Test 8 (contains Z): " + !list.contains("Z"));
+        // Reverse the list
+        list.reverse();
+        System.out.println("Test 13 (reverse): " + list.toString().equals("[C, A]"));
 
-        // Test 9: size and isEmpty
-        System.out.println("Test 9 (size == 2): " + (list.size() == 2));
-        System.out.println("Test 9 (isEmpty == false): " + !list.isEmpty());
-
-        // Test 10: clear
-        list.clear();
-        System.out.println("Test 10 (clear, isEmpty == true): " + list.isEmpty());
-        System.out.println("Test 10 (clear, size == 0): " + (list.size() == 0));
-        System.out.println("Test 10 (print): " + list.toString().equals("null"));
+        // Final size and empty check
+        System.out.println("Test 14 (size): " + (list.size() == 2));
+        System.out.println("Test 15 (isEmpty): " + !list.isEmpty());
     }
 }

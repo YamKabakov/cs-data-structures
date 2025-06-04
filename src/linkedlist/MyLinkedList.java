@@ -2,7 +2,7 @@ package linkedlist;
 
 public class MyLinkedList {
     private Node head;
-    private int size;
+    int size;
 
     private class Node {
         String value;
@@ -13,143 +13,80 @@ public class MyLinkedList {
         }
     }
 
-    public MyLinkedList() {
-        head = null;
-        size = 0;
+    // Add a value at the end of the list
+    public void add(String value) {
+        add(size, value);
     }
 
-    public void addFirst(String value) {
+    // Add a value at a specific index
+    public void add(int index, String value) {
+        if (index < 0 || index > size) throw new IndexOutOfBoundsException();
         Node newNode = new Node(value);
-        newNode.next = head;
-        head = newNode;
-        size++;
-    }
 
-    public void addLast(String value) {
-        Node newNode = new Node(value);
-        if (head == null) {
+        if (index == 0) {
+            newNode.next = head;
             head = newNode;
         } else {
-            Node current = head;
-            while (current.next != null) {
-                current = current.next;
-            }
-            current.next = newNode;
+            Node prev = getNode(index - 1);
+            newNode.next = prev.next;
+            prev.next = newNode;
         }
         size++;
     }
 
+    // Remove a value at a specific index
+    public String removeAt(int index) {
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+
+        Node removed;
+        if (index == 0) {
+            removed = head;
+            head = head.next;
+        } else {
+            Node prev = getNode(index - 1);
+            removed = prev.next;
+            prev.next = removed.next;
+        }
+        size--;
+        return removed.value;
+    }
+
+    // Remove a value by content
     public boolean remove(String value) {
         if (head == null) return false;
-
         if (head.value.equals(value)) {
             head = head.next;
             size--;
             return true;
         }
-
         Node current = head;
         while (current.next != null && !current.next.value.equals(value)) {
             current = current.next;
         }
-
         if (current.next == null) return false;
-
         current.next = current.next.next;
         size--;
         return true;
     }
 
-    public boolean contains(String value) {
-        Node current = head;
-        while (current != null) {
-            if (current.value.equals(value)) return true;
-            current = current.next;
-        }
-        return false;
-    }
-
+    // Get value by index
     public String get(int index) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        return getNode(index).value;
+    }
 
+    // Return index of a value
+    public int indexOf(String value) {
         Node current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-
-        return current.value;
-    }
-
-    public int size() {
-        return size;
-    }
-
-    public void clear() {
-        head = null;
-        size = 0;
-    }
-
-    public void printList() {
-        Node current = head;
+        int i = 0;
         while (current != null) {
-            System.out.print(current.value + " -> ");
+            if (current.value.equals(value)) return i;
             current = current.next;
+            i++;
         }
-        System.out.println("null");
+        return -1;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        Node current = head;
-        while (current != null) {
-            sb.append(current.value).append(" -> ");
-            current = current.next;
-        }
-        sb.append("null");
-        return sb.toString();
-    }
-
-    public void add(int index, String value) {
-        if (index < 0 || index > size) throw new IndexOutOfBoundsException();
-
-        if (index == 0) {
-            addFirst(value);
-            return;
-        }
-
-        Node newNode = new Node(value);
-        Node current = head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current.next;
-        }
-
-        newNode.next = current.next;
-        current.next = newNode;
-        size++;
-    }
-
-    public String removeAt(int index) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
-
-        if (index == 0) {
-            String value = head.value;
-            head = head.next;
-            size--;
-            return value;
-        }
-
-        Node current = head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current.next;
-        }
-
-        String value = current.next.value;
-        current.next = current.next.next;
-        size--;
-        return value;
-    }
-
+    // Reverse the list
     public void reverse() {
         Node prev = null;
         Node current = head;
@@ -162,18 +99,35 @@ public class MyLinkedList {
         head = prev;
     }
 
-    public int indexOf(String value) {
-        Node current = head;
-        int index = 0;
-        while (current != null) {
-            if (current.value.equals(value)) return index;
-            current = current.next;
-            index++;
-        }
-        return -1;
+    // Return size
+    public int size() {
+        return size;
     }
 
+    // Check if list is empty
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    // Helper to get node at index
+    private Node getNode(int index) {
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        Node current = head;
+        for (int i = 0; i < index; i++) current = current.next;
+        return current;
+    }
+
+    // String representation
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node current = head;
+        while (current != null) {
+            sb.append(current.value);
+            if (current.next != null) sb.append(", ");
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }

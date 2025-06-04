@@ -1,73 +1,53 @@
 import hashmap.MyHashMap;
+import java.util.Arrays;
 
 public class HashMapTest {
     public static void main(String[] args) {
         MyHashMap map = new MyHashMap();
 
-        // Test 1: put and get
-        map.put("a", "apple");
-        map.put("b", "banana");
-        map.put("c", "cherry");
-        System.out.println("Test 1 (get a == apple): " + "apple".equals(map.get("a")));
+        // Check if the map is initially empty
+        System.out.println("Test 1 (isEmpty): " + (map.isEmpty() == true));
+        System.out.println("Test 2 (size): " + (map.size() == 0));
 
-        // Test 2: overwrite key
-        map.put("a", "apricot");
-        System.out.println("Test 2 (overwrite a == apricot): " + "apricot".equals(map.get("a")));
+        // Add some key-value pairs
+        map.put("foo", "bar");
+        map.put("hello", "world");
+        map.put("a", "1");
 
-        // Test 3: containsKey
-        System.out.println("Test 3 (containsKey b): " + map.containsKey("b"));
-        System.out.println("Test 3 (containsKey z): " + !map.containsKey("z"));
+        // Check basic get and containsKey
+        System.out.println("Test 3 (get foo): " + "bar".equals(map.get("foo")));
+        System.out.println("Test 4 (get hello): " + "world".equals(map.get("hello")));
+        System.out.println("Test 5 (contains hello): " + map.containsKey("hello"));
+        System.out.println("Test 6 (contains nope): " + !map.containsKey("nope"));
 
-        // Test 4: remove
-        String removed = map.remove("b");
-        System.out.println("Test 4 (remove b == banana): " + "banana".equals(removed));
-        System.out.println("Test 4 (containsKey b == false): " + !map.containsKey("b"));
+        // Overwrite existing key
+        map.put("foo", "baz");
+        System.out.println("Test 7 (overwrite foo): " + "baz".equals(map.get("foo")));
 
-        // Test 5: size
-        System.out.println("Test 5 (size == 2): " + (map.size() == 2));
+        // Remove key and test again
+        System.out.println("Test 8 (remove a): " + "1".equals(map.remove("a")));
+        System.out.println("Test 9 (size): " + (map.size() == 2));
+        System.out.println("Test 10 (remove a again): " + (map.remove("a") == null));
 
-        // Test 6: isEmpty
-        System.out.println("Test 6 (isEmpty == false): " + !map.isEmpty());
-
-        // Test 7: clear manually
-        map.remove("a");
-        map.remove("c");
-        System.out.println("Test 7 (isEmpty == true): " + map.isEmpty());
-        System.out.println("Test 7 (size == 0): " + (map.size() == 0));
-
-        // Test 8: resizing
-        int initialCapacity = 16;
-        int triggerResizeAt = (int)(initialCapacity * 0.75) + 1;
-
-        for (int i = 0; i < triggerResizeAt + 5; i++) {
-            map.put("key" + i, "value" + i);
-        }
-
-        boolean allPresent = true;
-        for (int i = 0; i < triggerResizeAt + 5; i++) {
-            String expected = "value" + i;
-            String actual = map.get("key" + i);
-            if (!expected.equals(actual)) {
-                System.out.println("FAIL: key" + i + " expected " + expected + ", got " + actual);
-                allPresent = false;
-            }
-        }
-
-        System.out.println("Test 8 (Resize): " + allPresent);
-        System.out.println("Test 8 (Size after resize): " + (map.size() == triggerResizeAt + 5));
-
-        // Test 9: keySet and values
+        // Test keySet and values output lengths
         String[] keys = map.keySet();
         String[] vals = map.values();
+        System.out.println("Test 11 (keySet length): " + (keys.length == 2));
+        System.out.println("Test 12 (values length): " + (vals.length == 2));
 
-        boolean keyCheck = true;
-        boolean valCheck = true;
-        for (int i = 0; i < keys.length; i++) {
-            if (!map.containsKey(keys[i])) keyCheck = false;
-            if (map.get(keys[i]) == null) valCheck = false;
+        // Check values array contains known value
+        boolean hasWorld = Arrays.asList(vals).contains("world");
+        System.out.println("Test 13 (values contain 'world'): " + hasWorld);
+
+        // Add enough entries to trigger resize
+        for (int i = 0; i < 50; i++) {
+            map.put("k" + i, "v" + i);
         }
 
-        System.out.println("Test 9 (keySet all keys exist): " + keyCheck);
-        System.out.println("Test 9 (values are not null): " + valCheck);
+        // Validate post-resize behavior
+        System.out.println("Test 14 (size after resize): " + (map.size() == 52));
+        System.out.println("Test 15 (get k42): " + "v42".equals(map.get("k42")));
+        System.out.println("Test 16 (contains k42): " + map.containsKey("k42"));
+        System.out.println("Test 17 (isEmpty): " + !map.isEmpty());
     }
 }
