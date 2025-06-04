@@ -1,40 +1,36 @@
 package hashmap;
 
-import java.util.ArrayList;
-
 public class MyHashMap {
-    private static class Entry {
+    private static class Node {
         String key;
         String value;
-        Entry next;
+        Node next;
 
-        Entry(String key, String value) {
+        Node(String key, String value) {
             this.key = key;
             this.value = value;
         }
     }
 
-    private Entry[] table;
-    private int capacity = 16;
-    private int size = 0;
+    private Node[] buckets;
+    private int size;
     private static final double LOAD_FACTOR = 0.75;
 
     public MyHashMap() {
-        table = new Entry[capacity];
+        buckets = new Node[16]; // default capacity
     }
 
-    private int hash(String key) {
-        return Math.abs(key.hashCode()) % capacity;
+    // Hash function to get index in bucket array
+    private int getIndex(String key) {
+        return Math.abs(key.hashCode()) % buckets.length;
     }
 
+    // Add or update key-value pair
     public void put(String key, String value) {
-        if ((double) size / capacity >= LOAD_FACTOR) {
-            resize();
-        }
+        int index = getIndex(key);
+        Node current = buckets[index];
 
-        int index = hash(key);
-        Entry current = table[index];
-
+        // Update existing key
         while (current != null) {
             if (current.key.equals(key)) {
                 current.value = value;
@@ -43,37 +39,44 @@ public class MyHashMap {
             current = current.next;
         }
 
-        Entry newEntry = new Entry(key, value);
-        newEntry.next = table[index];
-        table[index] = newEntry;
+        // Insert new node at head
+        Node newNode = new Node(key, value);
+        newNode.next = buckets[index];
+        buckets[index] = newNode;
         size++;
+
+        // Resize if needed
+        if ((double) size / buckets.length > LOAD_FACTOR) {
+            resize();
+        }
     }
 
+    // Retrieve value by key
     public String get(String key) {
-        int index = hash(key);
-        Entry current = table[index];
+        int index = getIndex(key);
+        Node current = buckets[index];
         while (current != null) {
-            if (current.key.equals(key)) {
-                return current.value;
-            }
+            if (current.key.equals(key)) return current.value;
             current = current.next;
         }
         return null;
     }
 
+    // Check if key exists
     public boolean containsKey(String key) {
         return get(key) != null;
     }
 
+    // Remove key from map
     public String remove(String key) {
-        int index = hash(key);
-        Entry current = table[index];
-        Entry prev = null;
+        int index = getIndex(key);
+        Node current = buckets[index];
+        Node prev = null;
 
         while (current != null) {
             if (current.key.equals(key)) {
                 if (prev == null) {
-                    table[index] = current.next;
+                    buckets[index] = current.next;
                 } else {
                     prev.next = current.next;
                 }
@@ -83,55 +86,59 @@ public class MyHashMap {
             prev = current;
             current = current.next;
         }
-
         return null;
     }
 
+    // Return all keys as array
+    public String[] keySet() {
+        String[] keys = new String[size];
+        int i = 0;
+        for (Node bucket : buckets) {
+            Node current = bucket;
+            while (current != null) {
+                keys[i++] = current.key;
+                current = current.next;
+            }
+        }
+        return keys;
+    }
+
+    // Return all values as array
+    public String[] values() {
+        String[] vals = new String[size];
+        int i = 0;
+        for (Node bucket : buckets) {
+            Node current = bucket;
+            while (current != null) {
+                vals[i++] = current.value;
+                current = current.next;
+            }
+        }
+        return vals;
+    }
+
+    // Return number of key-value pairs
     public int size() {
         return size;
     }
 
+    // Return whether map is empty
     public boolean isEmpty() {
         return size == 0;
     }
 
+    // Resize the bucket array and rehash all keys
     private void resize() {
-        int oldCapacity = capacity;
-        capacity *= 2;
-        Entry[] oldTable = table;
-        table = new Entry[capacity];
+        Node[] oldBuckets = buckets;
+        buckets = new Node[oldBuckets.length * 2];
         size = 0;
 
-        for (int i = 0; i < oldCapacity; i++) {
-            Entry current = oldTable[i];
+        for (Node bucket : oldBuckets) {
+            Node current = bucket;
             while (current != null) {
                 put(current.key, current.value);
                 current = current.next;
             }
         }
-    }
-
-    public String[] keySet() {
-        ArrayList<String> keys = new ArrayList<>();
-        for (Entry bucket : table) {
-            Entry current = bucket;
-            while (current != null) {
-                keys.add(current.key);
-                current = current.next;
-            }
-        }
-        return keys.toArray(new String[0]);
-    }
-
-    public String[] values() {
-        ArrayList<String> vals = new ArrayList<>();
-        for (Entry bucket : table) {
-            Entry current = bucket;
-            while (current != null) {
-                vals.add(current.value);
-                current = current.next;
-            }
-        }
-        return vals.toArray(new String[0]);
     }
 }

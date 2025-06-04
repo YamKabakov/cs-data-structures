@@ -1,10 +1,7 @@
 package bst;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MyBinarySearchTree {
-    private class Node {
+    private static class Node {
         int key;
         String value;
         Node left, right;
@@ -16,40 +13,23 @@ public class MyBinarySearchTree {
     }
 
     private Node root;
-    private int size = 0;
+    private int size;
 
+    // Insert key-value into tree and rebalance
     public void insert(int key, String value) {
-        root = insertRecursive(root, key, value);
-        rebalance(); // Auto-rebalance
+        root = insert(root, key, value);
+        size++;
+        root = rebalance(root); // automatic rebalance after modification
     }
 
-    private Node insertRecursive(Node node, int key, String value) {
-        if (node == null) {
-            size++;
-            return new Node(key, value);
-        }
-        if (key < node.key) {
-            node.left = insertRecursive(node.left, key, value);
-        } else if (key > node.key) {
-            node.right = insertRecursive(node.right, key, value);
-        } else {
-            node.value = value;
-        }
+    private Node insert(Node node, int key, String value) {
+        if (node == null) return new Node(key, value);
+        if (key < node.key) node.left = insert(node.left, key, value);
+        else node.right = insert(node.right, key, value);
         return node;
     }
 
-    public boolean contains(int key) {
-        return containsRecursive(root, key);
-    }
-
-    private boolean containsRecursive(Node node, int key) {
-        if (node == null) return false;
-        if (key == node.key) return true;
-        return key < node.key
-            ? containsRecursive(node.left, key)
-            : containsRecursive(node.right, key);
-    }
-
+    // Get value by key
     public String get(int key) {
         Node current = root;
         while (current != null) {
@@ -59,65 +39,51 @@ public class MyBinarySearchTree {
         return null;
     }
 
-    public int size() {
-        return size;
+    // Check if key exists
+    public boolean contains(int key) {
+        return get(key) != null;
     }
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    public void inorder() {
-        inorderRecursive(root);
-        System.out.println();
-    }
-
-    private void inorderRecursive(Node node) {
-        if (node == null) return;
-        inorderRecursive(node.left);
-        System.out.print("(" + node.key + ", " + node.value + ") ");
-        inorderRecursive(node.right);
-    }
-
+    // Return smallest key in tree
     public int min() {
-        if (root == null) throw new IllegalStateException("Tree is empty");
         Node current = root;
-        while (current.left != null) {
-            current = current.left;
-        }
+        if (current == null) throw new IllegalStateException();
+        while (current.left != null) current = current.left;
         return current.key;
     }
 
+    // Return largest key in tree
     public int max() {
-        if (root == null) throw new IllegalStateException("Tree is empty");
         Node current = root;
-        while (current.right != null) {
-            current = current.right;
-        }
+        if (current == null) throw new IllegalStateException();
+        while (current.right != null) current = current.right;
         return current.key;
     }
 
+    // Remove key from tree and rebalance
     public void remove(int key) {
-        root = removeRecursive(root, key);
-        rebalance(); // Auto-rebalance
+        root = remove(root, key);
+        size--;
+        root = rebalance(root);
     }
 
-    private Node removeRecursive(Node node, int key) {
+    private Node remove(Node node, int key) {
         if (node == null) return null;
 
         if (key < node.key) {
-            node.left = removeRecursive(node.left, key);
+            node.left = remove(node.left, key);
         } else if (key > node.key) {
-            node.right = removeRecursive(node.right, key);
+            node.right = remove(node.right, key);
         } else {
-            size--;
+            // Case: 0 or 1 child
             if (node.left == null) return node.right;
             if (node.right == null) return node.left;
 
+            // Case: 2 children
             Node successor = findMin(node.right);
             node.key = successor.key;
             node.value = successor.value;
-            node.right = removeRecursive(node.right, successor.key);
+            node.right = remove(node.right, successor.key);
         }
         return node;
     }
@@ -127,40 +93,80 @@ public class MyBinarySearchTree {
         return node;
     }
 
-    // Build balanced tree from in-order list
-    public void rebalance() {
-        List<Node> nodes = new ArrayList<>();
-        collectInOrder(root, nodes);
-        root = buildBalancedTree(nodes, 0, nodes.size() - 1);
+    // Inorder traversal print
+    public void inorder() {
+        inorder(root);
+        System.out.println();
     }
 
-    private void collectInOrder(Node node, List<Node> list) {
+    private void inorder(Node node) {
         if (node == null) return;
-        collectInOrder(node.left, list);
-        list.add(new Node(node.key, node.value));
-        collectInOrder(node.right, list);
+        inorder(node.left);
+        System.out.print("(" + node.key + ", " + node.value + ") ");
+        inorder(node.right);
     }
 
-    private Node buildBalancedTree(List<Node> nodes, int start, int end) {
-        if (start > end) return null;
-        int mid = (start + end) / 2;
-        Node node = nodes.get(mid);
-        node.left = buildBalancedTree(nodes, start, mid - 1);
-        node.right = buildBalancedTree(nodes, mid + 1, end);
+    // Return number of elements
+    public int size() {
+        return size;
+    }
+
+    // Return whether tree is empty
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    // Rebalance tree using sorted array
+    private Node rebalance(Node node) {
+        if (node == null) return null;
+
+        // Collect keys and values into array
+        int n = countNodes(node);
+        int[] keys = new int[n];
+        String[] values = new String[n];
+        fillInorder(node, keys, values, new int[]{0});
+
+        // Build balanced BST
+        return buildBalanced(keys, values, 0, n - 1);
+    }
+
+    private int countNodes(Node node) {
+        if (node == null) return 0;
+        return 1 + countNodes(node.left) + countNodes(node.right);
+    }
+
+    private void fillInorder(Node node, int[] keys, String[] values, int[] i) {
+        if (node == null) return;
+        fillInorder(node.left, keys, values, i);
+        keys[i[0]] = node.key;
+        values[i[0]] = node.value;
+        i[0]++;
+        fillInorder(node.right, keys, values, i);
+    }
+
+    private Node buildBalanced(int[] keys, String[] values, int low, int high) {
+        if (low > high) return null;
+        int mid = (low + high) / 2;
+        Node node = new Node(keys[mid], values[mid]);
+        node.left = buildBalanced(keys, values, low, mid - 1);
+        node.right = buildBalanced(keys, values, mid + 1, high);
         return node;
     }
 
-    @Override
+    // String representation of tree in inorder
     public String toString() {
-        List<String> pairs = new ArrayList<>();
-        toStringRecursive(root, pairs);
-        return "[" + String.join(", ", pairs) + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        buildString(root, sb);
+        if (sb.length() > 1) sb.setLength(sb.length() - 2); // remove trailing comma
+        sb.append("]");
+        return sb.toString();
     }
 
-    private void toStringRecursive(Node node, List<String> list) {
+    private void buildString(Node node, StringBuilder sb) {
         if (node == null) return;
-        toStringRecursive(node.left, list);
-        list.add("(" + node.key + ", " + node.value + ")");
-        toStringRecursive(node.right, list);
+        buildString(node.left, sb);
+        sb.append("(").append(node.key).append(", ").append(node.value).append("), ");
+        buildString(node.right, sb);
     }
 }
