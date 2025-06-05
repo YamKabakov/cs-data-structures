@@ -39,6 +39,6 @@ A custom hash map implementation that stores `String` keys and values using sepa
 
 - Collision handling is done using **separate chaining** (linked lists in buckets).
 - The hash map resizes itself automatically to maintain performance.
-- All features are tested in `HashMapTest.java`.
+- All operations are tested in `HashMapTest.java`.
 
 ---
